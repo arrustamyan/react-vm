@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 
-const ViewModelContext = React.createContext();
+const ViewModelContext = React.createContext(null);
 
 export function viewModel(Component, Controller) {
   const controller = new Controller();
 
   return class extends React.Component {
     componentDidMount() {
-      controller.$mount();
+      controller.$mount(this.props);
     }
     componentWillUnmount() {
       controller.$unmount();

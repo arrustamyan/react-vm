@@ -4,8 +4,8 @@ export class TodoController {
 
   count = 0;
 
-  $mount() {
-    console.log('Todo: Initialized!');
+  $mount({ prop }) {
+    console.log('Todo: Initialized!', prop);
   }
 
   $unmount() {

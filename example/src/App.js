@@ -15,7 +15,7 @@ function App() {
       {state}
       <button onClick={() => update(Math.random())}>Update</button>
       {state > 0.5 &&
-      <Todo />
+      <Todo prop='value' />
       }
     </div>
   );

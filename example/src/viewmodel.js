@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var ViewModelContext = React.createContext();
+var ViewModelContext = React.createContext(null);
 export function viewModel(Component, Controller) {
     var controller = new Controller();
     return /** @class */ (function (_super) {
@@ -21,7 +21,7 @@ export function viewModel(Component, Controller) {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         class_1.prototype.componentDidMount = function () {
-            controller.$mount();
+            controller.$mount(this.props);
         };
         class_1.prototype.componentWillUnmount = function () {
             controller.$unmount();
