@@ -1,0 +1,22 @@
+{
+  "name": "react-vm",
+  "version": "0.0.1",
+  "description": "Library for old school MVVM approach with react",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "src": "src"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "react": "^16.8.6"
+  }
+}
