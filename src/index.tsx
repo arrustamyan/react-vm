@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 const ViewModelContext = React.createContext(null);
 
@@ -33,7 +33,7 @@ export function viewModel(Component, Controller) {
         }
       };
 
-      const vm = new Proxy(controller, observer);
+      const vm = new Proxy(new Controller(), observer);
 
       this.setState({
         vm,

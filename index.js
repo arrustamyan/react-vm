@@ -43,7 +43,7 @@ export function viewModel(Component, Controller) {
                     return target[prop];
                 }
             };
-            var vm = new Proxy(controller, observer);
+            var vm = new Proxy(new Controller(), observer);
             this.setState({
                 vm: vm,
             });

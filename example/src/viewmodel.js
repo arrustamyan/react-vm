@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -12,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import React, { useContext } from 'react';
 var ViewModelContext = React.createContext(null);
 export function viewModel(Component, Controller) {
     var controller = new Controller();
@@ -43,7 +43,7 @@ export function viewModel(Component, Controller) {
                     return target[prop];
                 }
             };
-            var vm = new Proxy(controller, observer);
+            var vm = new Proxy(new Controller(), observer);
             this.setState({
                 vm: vm,
             });
