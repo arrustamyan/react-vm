@@ -19,5 +19,10 @@
   },
   "dependencies": {
     "react": "^16.8.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arrustamyan/react-vm"
+  },
+  "homepage": "https://github.com/arrustamyan/react-vm"
 }
