@@ -1,7 +1,9 @@
 import React from 'react';
 export declare function viewModel(Component: any, Controller: any): {
     new (props: any): {
+        initializeVM(): void;
         componentDidMount(): void;
+        componentDidUpdate(prevProps: any): void;
         componentWillUnmount(): void;
         render(): JSX.Element;
         context: any;
@@ -17,7 +19,6 @@ export declare function viewModel(Component: any, Controller: any): {
         shouldComponentUpdate?(nextProps: Readonly<any>, nextState: Readonly<any>, nextContext: any): boolean;
         componentDidCatch?(error: Error, errorInfo: React.ErrorInfo): void;
         getSnapshotBeforeUpdate?(prevProps: Readonly<any>, prevState: Readonly<any>): any;
-        componentDidUpdate?(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void;
         componentWillMount?(): void;
         UNSAFE_componentWillMount?(): void;
         componentWillReceiveProps?(nextProps: Readonly<any>, nextContext: any): void;

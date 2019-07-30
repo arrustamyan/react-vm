@@ -25,7 +25,7 @@ export function viewModel(Component, Controller) {
             };
             return _this;
         }
-        class_1.prototype.componentDidMount = function () {
+        class_1.prototype.initializeVM = function () {
             var setState = this.setState.bind(this);
             var observer = {
                 set: function (target, prop, value) {
@@ -44,10 +44,23 @@ export function viewModel(Component, Controller) {
                 }
             };
             var vm = new Proxy(new Controller(), observer);
+            vm.$mount(this.props);
             this.setState({
                 vm: vm,
             });
-            vm.$mount(this.props);
+        };
+        class_1.prototype.componentDidMount = function () {
+            this.initializeVM();
+        };
+        class_1.prototype.componentDidUpdate = function (prevProps) {
+            var _this = this;
+            var propsAreEqual = Object.keys(this.props).every(function (key) {
+                return _this.props[key] === prevProps[key];
+            });
+            if (propsAreEqual && Object.keys(this.props).length === Object.keys(prevProps).length) {
+                return;
+            }
+            this.initializeVM();
         };
         class_1.prototype.componentWillUnmount = function () {
             this.state.vm.$unmount();
@@ -57,7 +70,7 @@ export function viewModel(Component, Controller) {
                 React.createElement(Component, null)));
         };
         return class_1;
-    }(React.Component));
+    }(React.PureComponent));
 }
 export function useViewModel() {
     return useContext(ViewModelContext);

@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -11,7 +12,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import React, { useContext } from 'react';
 var ViewModelContext = React.createContext(null);
 export function viewModel(Component, Controller) {
     var controller = new Controller();
@@ -44,10 +44,42 @@ export function viewModel(Component, Controller) {
                 }
             };
             var vm = new Proxy(new Controller(), observer);
+            vm.$mount(this.props);
             this.setState({
                 vm: vm,
             });
+        };
+        class_1.prototype.componentDidUpdate = function (prevProps) {
+            debugger;
+            var _this = this;
+            var propsAreEqual = Object.keys(this.props).every(function (key) {
+                return _this.props[key] === prevProps[key];
+            });
+            if (propsAreEqual && Object.keys(this.props).length === Object.keys(prevProps).length) {
+                return;
+            }
+            var setState = this.setState.bind(this);
+            var observer = {
+                set: function (target, prop, value) {
+                    target[prop] = value;
+                    setState({
+                        force: Math.random()
+                    });
+                    return true;
+                },
+                get: function (target, prop) {
+                    var value = target[prop];
+                    if (typeof value === 'object' && value !== null) {
+                        return new Proxy(value, observer);
+                    }
+                    return target[prop];
+                }
+            };
+            var vm = new Proxy(new Controller(), observer);
             vm.$mount(this.props);
+            this.setState({
+                vm: vm,
+            });
         };
         class_1.prototype.componentWillUnmount = function () {
             this.state.vm.$unmount();
@@ -57,7 +89,7 @@ export function viewModel(Component, Controller) {
                 React.createElement(Component, null)));
         };
         return class_1;
-    }(React.Component));
+    }(React.PureComponent));
 }
 export function useViewModel() {
     return useContext(ViewModelContext);
