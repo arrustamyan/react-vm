@@ -1,6 +1,6 @@
 {
   "name": "react-vm",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Library for old school MVVM approach with react",
   "main": "index.js",
   "directories": {
