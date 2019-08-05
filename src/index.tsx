@@ -1,8 +1,17 @@
 import React, { useContext } from 'react';
 
+interface IControllerConstructor {
+  new(): IController;
+}
+
+export interface IController {
+  $mount?: ({}) => void;
+  $unmount?: () => void;
+}
+
 const ViewModelContext = React.createContext(null);
 
-export function viewModel(Component, Controller) {
+export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor) {
   const controller = new Controller();
 
   return class extends React.PureComponent<any, any> {
@@ -75,6 +84,6 @@ export function viewModel(Component, Controller) {
   }
 }
 
-export function useViewModel() {
+export function useViewModel<C extends IController>(): C {
   return useContext(ViewModelContext);
 }

@@ -1,5 +1,12 @@
 import React from 'react';
-export declare function viewModel(Component: any, Controller: any): {
+interface IControllerConstructor {
+    new (): IController;
+}
+export interface IController {
+    $mount?: ({}: {}) => void;
+    $unmount?: () => void;
+}
+export declare function viewModel(Component: React.ComponentType, Controller: IControllerConstructor): {
     new (props: any): {
         initializeVM(): void;
         componentDidMount(): void;
@@ -28,4 +35,5 @@ export declare function viewModel(Component: any, Controller: any): {
     };
     contextType?: React.Context<any>;
 };
-export declare function useViewModel(): any;
+export declare function useViewModel<C extends IController>(): C;
+export {};
