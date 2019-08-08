@@ -2,11 +2,14 @@ import React from 'react';
 interface IControllerConstructor {
     new (): IController;
 }
+interface IControllerFactory {
+    (): IController;
+}
 export interface IController {
     $mount?: ({}: {}) => void;
     $unmount?: () => void;
 }
-export declare function viewModel(Component: React.ComponentType, Controller: IControllerConstructor): {
+export declare function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory: IControllerFactory): {
     new (props: any): {
         initializeVM(): void;
         componentDidMount(): void;

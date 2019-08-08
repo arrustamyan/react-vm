@@ -13,8 +13,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import React, { useContext } from 'react';
 var ViewModelContext = React.createContext(null);
-export function viewModel(Component, Controller) {
-    var controller = new Controller();
+export function viewModel(Component, Controller, factory) {
+    var controller;
+    if (typeof Controller === 'function') {
+        controller = new Controller();
+    }
+    else if (typeof factory === 'function') {
+        controller = factory();
+    }
+    else {
+        throw new Error('No controller/factory provided!');
+    }
     return /** @class */ (function (_super) {
         __extends(class_1, _super);
         function class_1(props) {
