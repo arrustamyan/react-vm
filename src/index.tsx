@@ -4,6 +4,10 @@ interface IControllerConstructor {
   new(): IController;
 }
 
+interface IControllerFactory {
+  (): IController;
+}
+
 export interface IController {
   $mount?: ({}) => void;
   $unmount?: () => void;
@@ -11,8 +15,16 @@ export interface IController {
 
 const ViewModelContext = React.createContext(null);
 
-export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor) {
-  const controller = new Controller();
+export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory: IControllerFactory) {
+  let controller;
+
+  if (typeof Controller === 'function') {
+    controller = new Controller();
+  } else if (typeof factory === 'function') {
+    controller = factory();
+  } else {
+    throw new Error('No controller/factory provided!');
+  }
 
   return class extends React.PureComponent<any, any> {
 
