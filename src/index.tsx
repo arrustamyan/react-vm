@@ -13,9 +13,11 @@ export interface IController {
   $unmount?: () => void;
 }
 
+export interface IViewModel extends IController {}
+
 const ViewModelContext = React.createContext(null);
 
-export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory: IControllerFactory) {
+function getControllerInstance(Controller: IControllerConstructor, factory: IControllerFactory): IController {
   let controller;
 
   if (typeof Controller === 'function') {
@@ -26,13 +28,18 @@ export function viewModel(Component: React.ComponentType, Controller: IControlle
     throw new Error('No controller/factory provided!');
   }
 
+  return controller;
+}
+
+export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory?: IControllerFactory) {
+
   return class extends React.PureComponent<any, any> {
 
     constructor(props) {
       super(props);
       this.state = {
         force: 0,
-        vm: controller,
+        vm: getControllerInstance(Controller, factory),
       }
     }
 
@@ -49,14 +56,22 @@ export function viewModel(Component: React.ComponentType, Controller: IControlle
         },
         get(target, prop) {
           const value = target[prop];
-          if (typeof value === 'object' && value !== null) {
-            return new Proxy(value, observer);
+          const ignoredProps = Object.getPrototypeOf(target).constructor.ignoredProps;
+
+          let isPropertyIgnored = false;
+
+          if (Array.isArray(ignoredProps) && ignoredProps.indexOf(prop) > -1) {
+              isPropertyIgnored = true;
+          }
+
+          if (typeof value === 'object' && value !== null && !isPropertyIgnored) {
+              return new Proxy(value, observer);
           }
           return target[prop];
         }
       };
 
-      const vm = new Proxy(new Controller(), observer);
+      const vm = new Proxy(getControllerInstance(Controller, factory), observer);
 
       vm.$mount(this.props);
 

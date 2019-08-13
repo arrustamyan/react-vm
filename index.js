@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import React, { useContext } from 'react';
 var ViewModelContext = React.createContext(null);
-export function viewModel(Component, Controller, factory) {
+function getControllerInstance(Controller, factory) {
     var controller;
     if (typeof Controller === 'function') {
         controller = new Controller();
@@ -24,13 +24,16 @@ export function viewModel(Component, Controller, factory) {
     else {
         throw new Error('No controller/factory provided!');
     }
+    return controller;
+}
+export function viewModel(Component, Controller, factory) {
     return /** @class */ (function (_super) {
         __extends(class_1, _super);
         function class_1(props) {
             var _this = _super.call(this, props) || this;
             _this.state = {
                 force: 0,
-                vm: controller,
+                vm: getControllerInstance(Controller, factory),
             };
             return _this;
         }
@@ -46,13 +49,18 @@ export function viewModel(Component, Controller, factory) {
                 },
                 get: function (target, prop) {
                     var value = target[prop];
-                    if (typeof value === 'object' && value !== null) {
+                    var ignoredProps = Object.getPrototypeOf(target).constructor.ignoredProps;
+                    var isPropertyIgnored = false;
+                    if (Array.isArray(ignoredProps) && ignoredProps.indexOf(prop) > -1) {
+                        isPropertyIgnored = true;
+                    }
+                    if (typeof value === 'object' && value !== null && !isPropertyIgnored) {
                         return new Proxy(value, observer);
                     }
                     return target[prop];
                 }
             };
-            var vm = new Proxy(new Controller(), observer);
+            var vm = new Proxy(getControllerInstance(Controller, factory), observer);
             vm.$mount(this.props);
             this.setState({
                 vm: vm,

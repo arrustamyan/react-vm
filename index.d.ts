@@ -9,7 +9,9 @@ export interface IController {
     $mount?: ({}: {}) => void;
     $unmount?: () => void;
 }
-export declare function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory: IControllerFactory): {
+export interface IViewModel extends IController {
+}
+export declare function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory?: IControllerFactory): {
     new (props: any): {
         initializeVM(): void;
         componentDidMount(): void;
