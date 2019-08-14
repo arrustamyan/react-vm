@@ -6,7 +6,9 @@ interface IControllerFactory {
     (): IController;
 }
 export interface IController {
-    $mount?: ({}: {}) => void;
+    $mount?: (props: {
+        [propName: string]: any;
+    }) => void | Promise<void>;
     $unmount?: () => void;
 }
 export interface IViewModel extends IController {

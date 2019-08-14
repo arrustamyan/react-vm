@@ -9,7 +9,7 @@ interface IControllerFactory {
 }
 
 export interface IController {
-  $mount?: ({}) => void;
+  $mount?: (props: {[propName: string]: any}) => void | Promise<void>;
   $unmount?: () => void;
 }
 
