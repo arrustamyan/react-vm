@@ -73,7 +73,10 @@ export function viewModel(Component: React.ComponentType, Controller: IControlle
 
       const vm = new Proxy(getControllerInstance(Controller, factory), observer);
 
-      vm.$mount(this.props);
+      if (typeof vm.$mount === 'function') {
+        vm.$mount(this.props);
+      }
+
 
       this.setState({
         vm,
@@ -97,7 +100,10 @@ export function viewModel(Component: React.ComponentType, Controller: IControlle
     }
 
     componentWillUnmount() {
-      this.state.vm.$unmount();
+      const vm = this.state.vm;
+      if (typeof vm.$unmount === 'function') {
+        vm.$unmount();
+      }
     }
 
     render() {

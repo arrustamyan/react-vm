@@ -61,7 +61,9 @@ export function viewModel(Component, Controller, factory) {
                 }
             };
             var vm = new Proxy(getControllerInstance(Controller, factory), observer);
-            vm.$mount(this.props);
+            if (typeof vm.$mount === 'function') {
+                vm.$mount(this.props);
+            }
             this.setState({
                 vm: vm,
             });
@@ -80,7 +82,10 @@ export function viewModel(Component, Controller, factory) {
             this.initializeVM();
         };
         class_1.prototype.componentWillUnmount = function () {
-            this.state.vm.$unmount();
+            var vm = this.state.vm;
+            if (typeof vm.$unmount === 'function') {
+                vm.$unmount();
+            }
         };
         class_1.prototype.render = function () {
             return (React.createElement(ViewModelContext.Provider, { value: this.state.vm },
