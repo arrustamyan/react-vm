@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 interface IControllerConstructor {
   new(): IController;
+  ignoredProps: string[];
 }
 
 interface IControllerFactory {
@@ -11,6 +12,7 @@ interface IControllerFactory {
 export interface IController {
   $mount?: (props: {[propName: string]: any}) => void | Promise<void>;
   $unmount?: () => void;
+  [name: string]: any;
 }
 
 export interface IViewModel extends IController {}

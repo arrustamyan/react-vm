@@ -1,6 +1,7 @@
 import React from 'react';
 interface IControllerConstructor {
     new (): IController;
+    ignoredProps: string[];
 }
 interface IControllerFactory {
     (): IController;
@@ -10,6 +11,7 @@ export interface IController {
         [propName: string]: any;
     }) => void | Promise<void>;
     $unmount?: () => void;
+    [name: string]: any;
 }
 export interface IViewModel extends IController {
 }
