@@ -35,7 +35,7 @@ export class TodoController {
 Than you can use this controller as initialized object in your component:
 
 ```jsx
-import { useViewModel } from '../viewmodel';
+import { useViewModel } from 'react-vm';
 
 export function Todo() {
   const vm = useViewModel();
@@ -70,12 +70,36 @@ You only have to pair the component and the controller to create a so called vie
 ```js
 import { Todo } from './Todo';
 import { TodoController } from './TodoController';
-import { viewModel } from '../viewmodel';
+import { viewModel } from 'react-vm';
 
 export default viewModel(Todo, TodoController);
 ```
 
 All the changes on the controller instance are triggering rerendering on the react component.
+
+You can ignore some property change triggering by adding @IgnoreProp annotation to property(Typescript)
+```ts
+import { IgnoreProp } from 'react-vm';
+
+export class TodoController {
+
+  @IgnoreProp
+  items = [];
+}
+
+```
+
+ or adding that property name to static ignoredProps array.(ES6 or Typescript) 
+ 
+```js
+export class TodoController {
+
+  items = [];
+
+  static ignoredProps = ['items']
+}
+
+```
 
 Wondering how it works? Take a look at the code. It's simple and very ugly.
 
