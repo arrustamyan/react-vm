@@ -35,7 +35,7 @@ export class TodoController {
 Than you can use this controller as initialized object in your component:
 
 ```jsx
-import { useViewModel } from '../viewmodel';
+import { useViewModel } from 'react-vm';
 
 export function Todo() {
   const vm = useViewModel();
@@ -70,7 +70,7 @@ You only have to pair the component and the controller to create a so called vie
 ```js
 import { Todo } from './Todo';
 import { TodoController } from './TodoController';
-import { viewModel } from '../viewmodel';
+import { viewModel } from 'react-vm';
 
 export default viewModel(Todo, TodoController);
 ```
