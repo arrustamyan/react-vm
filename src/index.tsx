@@ -10,12 +10,12 @@ interface IControllerFactory {
 }
 
 export interface IController {
-  $mount?: (props: {[propName: string]: any}) => void | Promise<void>;
+  $mount?: (props: { [propName: string]: any }) => void | Promise<void>;
   $unmount?: () => void;
   [name: string]: any;
 }
 
-export interface IViewModel extends IController {}
+export interface IViewModel extends IController { }
 
 const ViewModelContext = React.createContext(null);
 
@@ -45,29 +45,37 @@ export function viewModel(Component: React.ComponentType, Controller: IControlle
       }
     }
 
+    checkIsPropertyIgnored(target, prop) {
+      const ignoredProps = Object.getPrototypeOf(target).constructor.ignoredProps;
+
+      if (Array.isArray(ignoredProps) && ignoredProps.indexOf(prop) > -1) {
+        return true;
+      }
+
+      return false;
+    }
+
     initializeVM() {
       const setState = this.setState.bind(this);
       const observer = {
         set(target, prop, value) {
-          target[prop] = value;
-          setState({
-            force: Math.random()
-          });
+          const isPropertyIgnored = this.checkIsPropertyIgnored(target, prop);
+
+          if (!isPropertyIgnored) {
+            target[prop] = value;
+            setState({
+              force: Math.random()
+            });
+          }
 
           return true;
         },
         get(target, prop) {
           const value = target[prop];
-          const ignoredProps = Object.getPrototypeOf(target).constructor.ignoredProps;
-
-          let isPropertyIgnored = false;
-
-          if (Array.isArray(ignoredProps) && ignoredProps.indexOf(prop) > -1) {
-              isPropertyIgnored = true;
-          }
+          const isPropertyIgnored = this.checkIsPropertyIgnored(target, prop);
 
           if (typeof value === 'object' && value !== null && !isPropertyIgnored) {
-              return new Proxy(value, observer);
+            return new Proxy(value, observer);
           }
           return target[prop];
         }
