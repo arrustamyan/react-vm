@@ -33,6 +33,15 @@ function getControllerInstance(Controller: IControllerConstructor, factory: ICon
   return controller;
 }
 
+export function IgnoreProp(obj, prop) {
+  const { ignoredProps = [] } = obj.constructor;
+  if (!ignoredProps.includes(prop)) {
+    ignoredProps.push(prop);
+  }
+
+  obj.constructor.ignoredProps = ignoredProps;
+}
+
 export function viewModel(Component: React.ComponentType, Controller: IControllerConstructor, factory?: IControllerFactory) {
 
   return class extends React.PureComponent<any, any> {

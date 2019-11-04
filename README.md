@@ -77,6 +77,30 @@ export default viewModel(Todo, TodoController);
 
 All the changes on the controller instance are triggering rerendering on the react component.
 
+You can ignore some property change triggering by adding @IgnoreProp annotation to property(Typescript)
+```ts
+import { IgnoreProp } from 'react-vm';
+
+export class TodoController {
+
+  @IgnoreProp
+  items = [];
+}
+
+```
+
+ or adding that property name to static ignoredProps array.(ES6 or Typescript) 
+ 
+```js
+export class TodoController {
+
+  items = [];
+
+  static ignoredProps = ['items']
+}
+
+```
+
 Wondering how it works? Take a look at the code. It's simple and very ugly.
 
 **DISCLAIMER:** This is just a prototype of an idea and is implemented in a very non-efficient way. It most probably does not cover a lot of use cases as it was not tested on large scale apps. If you think this is a terrible idea, I'd happily like to know why.
